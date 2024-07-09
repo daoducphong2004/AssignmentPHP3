@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title','Tin Tức Của Phong')
 
 @section('content')
 <main>
@@ -113,9 +114,11 @@
                                 <!--Nav Button  -->
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
                                         <!-- start Single Trending Item -->
                                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
                                         <!-- end Single Trending Item -->
+
                                     </div>
                                 </nav>
                                 <!--End Nav Button  -->

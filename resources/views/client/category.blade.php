@@ -1,4 +1,11 @@
 @extends('layout.app')
+@section('title')
+    @if(isset($selectedCategory))
+        {{ $selectedCategory->title }}
+    @else
+        Tất cả danh mục
+    @endif
+@endsection
 
 @section('content')
     <main>

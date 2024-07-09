@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title','Liên Hệ ')
 
 @section('content')
 <section class="contact-section">

@@ -47,7 +47,8 @@ class CategoryController extends Controller
             ->select('news.*', 'category.title as category_title')
             ->where('category.id', $id)
             ->get();
-        return view('client.category', ['news' => $news, 'category' => $category]);
+            $selectedCategory = DB::table('category')->where('id', $id)->first();
+            return view('client.category', ['news' => $news, 'category' => $category,'selectedCategory'=>$selectedCategory]);
     }
 
     /**

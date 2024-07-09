@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\category;
 use App\Models\news;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -42,25 +43,25 @@ class NewsController extends Controller
         news::where('id', $id)->increment('view');
 
         // lấy tin tức có id bằng id truyền vào
-        $news = DB::table('news')
+        $news = news::query()
             ->join('category', 'news.id_category', '=', 'category.id')
             ->select('news.*', 'category.title as category_title', 'category.id as category_id')
             ->where('news.id', $id)
             ->first();
 
         // lấy danh mục và đếm số bài viết có trong danh mục
-        $category = DB::table('category')
+        $category = category::query()
             ->join('news', 'category.id', '=', 'news.id_category')
             ->select('category.*', DB::raw('COUNT(category.id) as tongbaiviet'))
             ->groupBy('category.id')
             ->get();
         // lấy bài viết trước
-        $previousNews = DB::table('news')
+        $previousNews = news::query()
             ->where('ID', '<', $id)
             ->orderBy('ID', 'desc')
             ->first();
         // lấy bài viết sau
-        $nextNews = DB::table('news')
+        $nextNews = news::query()
             ->where('ID', '>', $id)
             ->orderBy('ID', 'asc')
             ->first();
@@ -120,8 +121,8 @@ class NewsController extends Controller
         return view(
             'client.newsdetail',
             [
-                'tintuc' => $news,
-                'danhmuc' => $category,
+                'news' => $news,
+                'category' => $category,
                 'tintuctruocsau' => $newsbetween,
                 'ID' => $id,
                 'tintuclq' => $relatednews,

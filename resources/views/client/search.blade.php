@@ -1,5 +1,5 @@
 @extends('layout.app')
-
+@section('title','Tìm Kiếm: '.$keyword)
 @section('content')
     <main class="container">
         <div style="margin-top:20px" class="search-box">
