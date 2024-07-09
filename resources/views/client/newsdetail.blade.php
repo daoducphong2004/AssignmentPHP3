@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title',$news->title)
 
 @section('content')
     <style>
@@ -35,20 +36,20 @@
                 <div class="col-lg-8 posts-list">
                     <div class="single-post">
                         <div class="feature-img">
-                            <img class="img-fluid" src="{{ asset($tintuc->img) }}" alt="">
+                            <img class="img-fluid" src="{{ asset($news->img) }}" alt="">
                         </div>
                         <div class="blog_details">
-                            <h2>{{ $tintuc->title }}
+                            <h2>{{ $news->title }}
                             </h2>
                             <ul class="blog-info-link mt-3 mb-4">
-                                <li><a href="{{ route('category.show', $tintuc->category_id) }}"><i
+                                <li><a href="{{ route('category.show', $news->category_id) }}"><i
                                             class="fa fa-folder"></i>
-                                        {{ $tintuc->category_title }}</a></li>
-                                <li><i class="fa fa-eye"></i>{{ $tintuc->view }} lượt xem</li>
+                                        {{ $news->category_title }}</a></li>
+                                <li><i class="fa fa-eye"></i>{{ $news->view }} lượt xem</li>
                                 <li><i class="fa fa-commenting"></i> {{ isset($totalComments[0]) ? $totalComments[0]->totalComments : '0' }} Bình Luận</li>
                             </ul>
                             <p>
-                                {!! $tintuc->content !!}
+                                {!! $news->content !!}
                             </p>
 
                         </div>
@@ -56,7 +57,7 @@
                     <div class="navigation-top">
                         <div class="d-sm-flex justify-content-between text-center">
                             <p class="like-info"><span class="align-middle"><i
-                                        class="fa fa-eye"></i></span>{{ $tintuc->view }} lượt xem</p>
+                                        class="fa fa-eye"></i></span>{{ $news->view }} lượt xem</p>
                             <div class="col-sm-4 text-center my-2 my-sm-0">
                                 <!-- <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> 06 Comments</p> -->
                             </div>
@@ -70,49 +71,49 @@
                         <div class="navigation-area">
                             {{-- Bài Viết Trước Sau Bắt Đầu --}}
                             <div class="row">
-                                @if (isset($tintuctruocsau[0]))
+                                @if (isset($newstruocsau[0]))
                                     <div
                                         class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                         <div class="thumb">
-                                            <a href="{{ route('news.show', $tintuctruocsau[0]->id) }}">
+                                            <a href="{{ route('news.show', $newstruocsau[0]->id) }}">
                                                 <img class="img-fluid"
-                                                    style="max-height: 100px" src="{{ asset($tintuctruocsau[0]->img) }}"
-                                                    alt="{{ $tintuctruocsau[0]->title }}">
+                                                    style="max-height: 100px" src="{{ asset($newstruocsau[0]->img) }}"
+                                                    alt="{{ $newstruocsau[0]->title }}">
                                             </a>
                                         </div>
                                         <div class="arrow">
-                                            <a href="{{ route('news.show', $tintuctruocsau[0]->id) }}">
+                                            <a href="{{ route('news.show', $newstruocsau[0]->id) }}">
                                                 <span class="lnr text-white ti-arrow-left"></span>
                                             </a>
                                         </div>
                                         <div class="detials">
                                             <p>Bài Viết Trước</p>
-                                            <a href="{{ route('news.show', $tintuctruocsau[0]->id) }}">
-                                                <h4>{{ $tintuctruocsau[0]->title }}</h4>
+                                            <a href="{{ route('news.show', $newstruocsau[0]->id) }}">
+                                                <h4>{{ $newstruocsau[0]->title }}</h4>
                                             </a>
                                         </div>
                                     </div>
                                 @endif
 
-                                @if (isset($tintuctruocsau[1]))
+                                @if (isset($newstruocsau[1]))
                                     <div
                                         class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                                         <div class="detials">
                                             <p>Bài Viết Tiếp Theo</p>
-                                            <a href="{{ route('news.show', $tintuctruocsau[1]->id) }}">
-                                                <h4>{{ $tintuctruocsau[1]->title }}</h4>
+                                            <a href="{{ route('news.show', $newstruocsau[1]->id) }}">
+                                                <h4>{{ $newstruocsau[1]->title }}</h4>
                                             </a>
                                         </div>
                                         <div class="arrow">
-                                            <a href="{{ route('news.show', $tintuctruocsau[1]->id) }}">
+                                            <a href="{{ route('news.show', $newstruocsau[1]->id) }}">
                                                 <span class="lnr text-white ti-arrow-right"></span>
                                             </a>
                                         </div>
                                         <div class="thumb">
-                                            <a href="{{ route('news.show', $tintuctruocsau[1]->id) }}">
+                                            <a href="{{ route('news.show', $newstruocsau[1]->id) }}">
                                                 <img class="img-fluid"
-                                                    style="max-height: 100px" src="{{ asset($tintuctruocsau[1]->img) }}"
-                                                    alt="{{ $tintuctruocsau[1]->title }}">
+                                                    style="max-height: 100px" src="{{ asset($newstruocsau[1]->img) }}"
+                                                    alt="{{ $newstruocsau[1]->title }}">
                                             </a>
                                         </div>
                                     </div>
@@ -129,7 +130,7 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <form action="{{ route('comments.store', $tintuc->id) }}" method="POST">
+                        <form action="{{ route('comments.store', $news->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="content">Nội Dung</label>
@@ -150,7 +151,7 @@
                                     <a href="#" class="reply" data-comment-id="{{ $comment->id }}">Trả lời</a>
 
                                     <!-- Form trả lời bình luận -->
-                                    <form action="{{ route('comments.store', $tintuc->id) }}" method="POST"
+                                    <form action="{{ route('comments.store', $news->id) }}" method="POST"
                                         class="reply-form" style="display: none;">
                                         @csrf
                                         <div class="form-group">
@@ -201,7 +202,7 @@
                     <aside class="single_sidebar_widget post_category_widget">
                         <h4 class="widget_title">Danh Mục</h4>
                         <ul class="list cat-list">
-                            @foreach ($danhmuc as $item)
+                            @foreach ($category as $item)
                                 <li>
                                     <a href="{{ route('category.show', $item->id) }}" class="d-flex">
                                         <p>{{ $item->title }}</p>

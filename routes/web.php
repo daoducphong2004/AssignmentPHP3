@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// trang chủ
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -47,4 +47,3 @@ Route::post('/comments/{tintuc_id}', [CommentController::class, 'store'])->name(
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Auth::routes();
-
