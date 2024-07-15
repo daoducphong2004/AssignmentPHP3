@@ -32,7 +32,9 @@
                                         <li><a href="{{ route('category') }}">Danh Mục</a>
                                             <ul class="submenu">
                                                 @foreach ($category as $item)
-                                                <li><a href="{{ route('category.show',$item->id) }}">{{ $item->title }}</a></li>
+                                                    <li><a
+                                                            href="{{ route('category.show', $item->id) }}">{{ $item->title }}</a>
+                                                    </li>
                                                 @endforeach
 
                                             </ul>
@@ -74,37 +76,39 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            @endguest
-                                        </ul>
-                                    </nav>
-                                </div>
+                                        @endguest
+                                    </ul>
+                                </nav>
                             </div>
-                            <div class="col-xl-2 col-lg-2 col-md-4">
-                                <div class="header-right-btn f-right d-none d-lg-block">
-
-
-                                </div>
-                                <aside class="single_sidebar_widget search_widget">
-                                    <form action="{{ route('search') }}">
-                                        <div class="form-group">
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control" style="border-radius: 10px; margin-right: 10px" name='keyword' placeholder="Keyword" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="genric-btn info circle arrow" type="button"><i class="ti-search"></i></button>
-                                                </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-4">
+                            <div class="header-right-btn f-right d-none d-lg-block">
+                            </div>
+                            <aside class="single_sidebar_widget search_widget">
+                                <form action="{{ route('search') }}">
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control"
+                                                style="border-radius: 10px; margin-right: 10px" name='keyword'
+                                                placeholder="Keyword" onfocus="this.placeholder = ''"
+                                                onblur="this.placeholder = 'Search Keyword'">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="genric-btn info circle arrow"
+                                                    type="button"><i class="ti-search"></i></button>
                                             </div>
                                         </div>
-                                    </form>
-                                </aside>
-                            </div>
-                            <!-- Mobile Menu -->
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-md-none"></div>
-                            </div>
+                                    </div>
+                                </form>
+                            </aside>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-md-none"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Header End -->
-    </header>
+    </div>
+    <!-- Header End -->
+</header>

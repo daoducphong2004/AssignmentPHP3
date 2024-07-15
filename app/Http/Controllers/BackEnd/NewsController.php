@@ -39,6 +39,41 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    // public function store(Request $request)
+    // {
+    //     $data = $request->except('img');
+    //     if ($request->hasFile('img')) {
+    //         $path = Storage::put(self::PATH_UPLOAD, $request->file('img'));
+    //         if ($path) {
+    //             $data['img'] = 'storage/' . $path;
+    //             // Process the content to preserve line breaks and bold text
+    //             $data['content'] = nl2br(e($request->input('content')));
+    //             news::query()->create($data);
+    //             return redirect()->route('admin.news.index')->with('success', 'Image uploaded successfully.');
+    //         } else {
+    //             return redirect()->route('admin.news.index')->with('error', 'Image upload failed.');
+    //         }
+    //     } else {
+    //         return redirect()->route('admin.news.index')->with('error', 'No image file found.');
+    //     }
+
+    // }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = $file->store('news', 'public'); // lưu vào disk 'public' với thư mục 'news'
+
+            $Url = url('storage/'.$path); // tạo URL cho ảnh
+
+            // Đảm bảo URL trả về có cấu trúc đúng với tên miền của bạn
+            return response()->json(['url' => $Url]);
+
+        }
+
+        return response()->json(['error' => 'No image uploaded'], 400);
+    }
     public function store(Request $request)
     {
         $data = $request->except('img');
@@ -47,7 +82,6 @@ class NewsController extends Controller
             if ($path) {
                 $data['img'] = 'storage/' . $path;
                 // Process the content to preserve line breaks and bold text
-                $data['content'] = nl2br(e($request->input('content')));
                 news::query()->create($data);
                 return redirect()->route('admin.news.index')->with('success', 'Image uploaded successfully.');
             } else {
@@ -58,7 +92,6 @@ class NewsController extends Controller
         }
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -137,3 +170,4 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index')->with('success', 'Xóa danh mục và cover thành công.');
     }
 }
+

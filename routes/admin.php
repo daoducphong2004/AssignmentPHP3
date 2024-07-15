@@ -28,6 +28,8 @@ Route::prefix('admin')
         foreach ($resources as $name => $controller) {
             Route::resource($name, $controller);
         }
+        Route::post('/news/uploadImage', [NewsController::class, 'uploadImage'])->name('news.uploadImage');
+
     });
 
 

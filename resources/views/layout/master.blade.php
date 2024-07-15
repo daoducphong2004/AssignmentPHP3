@@ -1,10 +1,11 @@
-<?php
-use App\Models\category;
-use Illuminate\Http\Request;
+@php
+    use App\Models\category;
+    use Illuminate\Http\Request;
 
-$category = category::all();
+    $category = category::all();
+@endphp
 
-?>
+
 
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -19,6 +20,7 @@ $category = category::all();
     @yield('content')
 
     @include('layout.footer')
+
 
 
 
