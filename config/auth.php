@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            // \App\Http\Middleware\EnsureEmailIsVerified::class,
         ],
     ],
 

@@ -5,8 +5,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\contactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -20,6 +22,8 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 // trang chủ
+Auth::routes(['verify' => true]);
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -42,8 +46,31 @@ Route::get('/contact', [contactController::class, 'create'])->name('contact.crea
 Route::post('/contact', [contactController::class, 'store'])->name('contact.store');
 
 //Bình luận
-Route::post('/comments/{tintuc_id}', [CommentController::class, 'store'])->name('comments.store');
+
+// Route::get('/test/{id}', [NewsController::class, 'test'])
+//     ->where('id', '[0-9]+')
+//     ->name('news.test')
+Route::post('/comments/uploadImage', [NewsController::class, 'uploadImage'])->name('comments.uploadImage');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware(['auth', 'verified']);
+
 //tìm kiếm
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// //verified
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Auth::routes();

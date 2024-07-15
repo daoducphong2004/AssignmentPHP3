@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title','Đăng Ký')
 
 @section('content')
     <style>

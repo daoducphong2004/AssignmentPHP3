@@ -7,6 +7,7 @@ use App\Models\news;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -20,6 +21,55 @@ class NewsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    // public function test(string $id)
+    // {
+    //     $news = news::query()
+    //         ->join('category', 'news.id_category', '=', 'category.id')
+    //         ->select('news.*', 'category.title as category_title', 'category.id as category_id')
+    //         ->where('news.id', $id)
+    //         ->first();
+
+    //     $comments = DB::table('comment')
+    //         ->where('tintuc_id', $id)
+    //         ->get();
+
+    //     // Khởi tạo một mảng để lưu trữ các bình luận theo cha-con
+    //     $commentsByParents = [];
+
+    //     // Lặp qua tất cả các bình luận
+    //     foreach ($comments as $comment) {
+    //         // Kiểm tra nếu bình luận không có cha (parent_id là null)
+    //         if ($comment->parent_id === null) {
+    //             // Thêm thuộc tính 'replies' là một mảng rỗng cho bình luận gốc
+    //             $comment->replies = [];
+    //             // Lưu trữ bình luận vào mảng với id của nó làm key
+    //             $commentsByParents[$comment->id] = $comment;
+    //         } else {
+    //             // Nếu bình luận có parent_id, tức là bình luận trả lời
+    //             // Kiểm tra xem bình luận gốc đã được lưu trữ trong mảng chưa
+    //             if (isset($commentsByParents[$comment->parent_id])) {
+    //                 // Thêm bình luận trả lời vào mảng 'replies' của bình luận gốc
+    //                 $commentsByParents[$comment->parent_id]->replies[] = $comment;
+    //             }
+    //         }
+    //     }
+    //     return view('client.test', ['comments' => $commentsByParents, 'news' => $news]);
+    // }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = $file->store('comments', 'public'); // lưu vào disk 'public' với thư mục 'comments'
+
+            $Url = url('storage/'.$path); // tạo URL cho ảnh
+
+            // Đảm bảo URL trả về có cấu trúc đúng với tên miền của bạn
+            return response()->json(['url' => $Url]);
+
+        }
+
+        return response()->json(['error' => 'No image uploaded'], 400);
+    }
     public function create()
     {
         //
@@ -76,10 +126,11 @@ class NewsController extends Controller
             ->where('category.id', $news->category_id)
             ->get();
 
-        //lấy comment của bài viết
+        //lấy toongr comment của bài viết
         $totalComments = DB::table('comment')
             ->select(DB::raw('COUNT(tintuc_id) as totalComments'))
             ->groupBy('tintuc_id')
+            ->where('tintuc_id',$id)
             ->get();
 
 
@@ -123,7 +174,7 @@ class NewsController extends Controller
             [
                 'news' => $news,
                 'category' => $category,
-                'tintuctruocsau' => $newsbetween,
+                'newstruocsau' => $newsbetween,
                 'ID' => $id,
                 'tintuclq' => $relatednews,
                 'comments' => $commentsByParents,
