@@ -1,7 +1,9 @@
 <?php
 
+use App\Services\FirebaseService;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+
 
 define('LARAVEL_START', microtime(true));
 
@@ -53,3 +55,58 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+?>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBedOWfH-dOb2KDeiFEBBRFYFQU9gY04CU",
+        authDomain: "assignmentphp3.firebaseapp.com",
+        databaseURL: "https://assignmentphp3-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "assignmentphp3",
+        storageBucket: "assignmentphp3.appspot.com",
+        messagingSenderId: "304958321074",
+        appId: "1:304958321074:web:c266563f3219ef123334ab"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Function to send message
+  window.sendMessage =   function (chatRoomId, message) {
+        const messagesRef = ref(database, 'chatrooms/' + chatRoomId + '/messages');
+        push(messagesRef, {
+            text: message,
+            timestamp: new Date().getTime()  // Add timestamp for sorting
+        });
+        document.getElementById('messageInput').value = ''; // Clear input after sending
+    }
+
+    // Function to display messages
+    function displayMessages(messages) {
+        const chatDiv = document.getElementById('chatMessages');
+        chatDiv.innerHTML = ''; // Clear previous messages
+        for (let key in messages) {
+            if (messages.hasOwnProperty(key)) {
+                const message = messages[key];
+                const messageElement = document.createElement('div');
+                messageElement.innerText = message.text;
+                chatDiv.appendChild(messageElement);
+            }
+        }
+    }
+
+    // Listen for new messages
+    function listenForMessages(chatRoomId) {
+        const messagesRef = ref(database, 'chatrooms/' + chatRoomId + '/messages');
+        onValue(messagesRef, (snapshot) => {
+            const messages = snapshot.val();
+            displayMessages(messages);
+        });
+    }
+
+    // Initialize chat room
+    listenForMessages('chatRoom1');
+</script>

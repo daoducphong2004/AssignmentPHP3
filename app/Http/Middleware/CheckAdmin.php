@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class CheckAdmin
 {
     public function handle($request, Closure $next)
     {
@@ -12,6 +12,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/');  // Hoặc bạn có thể chuyển hướng tới trang không có quyền truy cập
+        return redirect('/');
     }
 }

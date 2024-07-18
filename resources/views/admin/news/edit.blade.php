@@ -5,7 +5,7 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <div class="container-fluid">
-        <form action="{{ route('admin.news.update',$news->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('admin.news.update',$news->id) }}" method="post" id='insert-form' enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <label for="title">Tiêu đề:</label>
@@ -20,7 +20,7 @@
 
             <div class="form-group">
                 <label for="content">Nội dung:</label>
-                <div id="editor-container" style="min-height: 300px;"></div>
+                <div id="editor-container" style="min-height: 300px;">{!! $news->content !!}</div>
                 <textarea name="content" id="content123" style="display: none;"></textarea>
                 {!! $news->content !!}
             </div> <br><br>
