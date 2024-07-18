@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\contactController;
 use App\Http\Controllers\HomeController;
@@ -74,3 +75,11 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Auth::routes();
+
+//chat
+Route::get('/chat', function () {
+    return view('client.chat');
+})->name('chat.index');
+
+Route::post('/chatrooms/{chatRoomId}/messages', [ChatController::class, 'sendMessage']);
+Route::get('/chat/{chatRoomId}/messages', [ChatController::class, 'getMessages']);
