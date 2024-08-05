@@ -35,16 +35,16 @@ class CommentController extends Controller
             'content' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
         ]);
-
-        // Create comment
-      $comment = Comment::create([
-            'tintuc_id' => $request->input('tintuc_id'),
-            'user_id' => Auth::id(), // Adjust as per your user authentication logic
-            'parent_id' => $request->input('parent_id') ?: null,
-            'content' => $request->input('content'),
-        ]);
-        // dd($comment);
-        return redirect()->back()->with('success', 'Bình luận của bạn đã được gửi thành công!');
+        if ($request->input('content') != '<p><br></p>') {
+            Comment::create([
+                'tintuc_id' => $request->input('tintuc_id'),
+                'user_id' => Auth::id(),
+                'parent_id' => $request->input('parent_id') ?: null,
+                'content' => $request->input('content'),
+            ]);
+            return redirect()->back()->with('success', 'Bình luận của bạn đã được gửi thành công!');
+        }
+        return redirect()->back()->with('error', 'Bình luận của bạn không được để trống');
     }
     /**
      * Display the specified resource.
@@ -73,8 +73,14 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $comment = Comment::findOrFail($request->commentId);
+            $comment->delete();
+            return response()->json(['success' => true, 'message' => 'Xóa bình luận thành công']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Xóa bình luận không thành công']);
+        }
     }
 }
