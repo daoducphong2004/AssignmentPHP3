@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('title')
-    @if(isset($selectedCategory))
+    @if (isset($selectedCategory))
         {{ $selectedCategory->title }}
     @else
         Tất cả danh mục
@@ -67,9 +67,17 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <!-- End Nav Card -->
+                        </div>
+                        <div class="container  text-center">
+                            @if ($news->currentPage() > 1)
+                            <a href="{{ $news->previousPageUrl() }}" class='btn btn-primary'>Trước</a>
+                        @endif
+
+                        @if ($news->hasMorePages())
+                            <a href="{{ $news->nextPageUrl() }}" class='btn btn-primary'>Tiếp theo</a>
+                        @endif
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactStore;
 use App\Models\category;
 use App\Models\contact;
 use Illuminate\Http\Request;
@@ -13,7 +14,6 @@ class contactController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -21,25 +21,21 @@ class contactController extends Controller
      */
     public function create()
     {
-        $category = category::all();
         return view('client.contact');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactStore $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'content' => 'required|string',
-        ]);
-
         contact::create($request->all());
 
-        return redirect()->route('contact.create')->with('success', 'Liên hệ của bạn đã được gửi thành công!');
+        // Set the success message in the session
+        session()->flash('success', 'Your message has been sent successfully!');
+
+        // Redirect to the same page or a success page
+        return redirect()->back();
     }
 
     /**

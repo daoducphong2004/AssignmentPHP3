@@ -13,7 +13,7 @@
                         <!-- Trending Top -->
                             <div class="trending-top mb-30">
                                 <div class="trend-top-img">
-                                    <img style="max-height: 400px" src="{{ $tintuctop->img }}" alt="">
+                                    <img style="max-height: 400px" src="{{ asset($tintuctop->img) }}" alt="">
                                     <!-- img banner top -->
                                     <div class="trend-top-cap">
                                         <span>{{ $tintuctop->category_title }}</span><!-- Danh Mục -->
@@ -44,7 +44,7 @@
                     </div>
                     <!-- Riht content -->
                     <div class="col-lg-4">
-                        @foreach ($tintuc->skip(5)->take(5) as $item)
+                        @foreach ($tintuc->skip(4)->take(5) as $item)
                             <!-- start Single Trending Item -->
                             <div class="trand-right-single d-flex">
                                 <div class="trand-right-img">
@@ -82,8 +82,9 @@
                             @foreach ($tintuchangtuan->take(5) as $item)
                                 <div class="weekly-single">
                                     <div class="weekly-img">
-                                        <img style="max-height: 300px" src="/{{ $item->img }}" alt="">
+                                        <img style="max-height: 300px" src="/{{ asset($item->img) }}" alt="">
                                     </div>
+                                    aa
                                     <div class="weekly-caption">
                                         <span class="color1">{{ $item->category_title }}</span>
                                         <h4><a href="{{ route('news.show', $item->id) }}">{{ $item->title }}</a></h4><!-- sau đổi phần route -->

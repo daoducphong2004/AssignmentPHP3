@@ -53,6 +53,7 @@ Route::post('/contact', [contactController::class, 'store'])->name('contact.stor
 //     ->name('news.test')
 Route::post('/comments/uploadImage', [NewsController::class, 'uploadImage'])->name('comments.uploadImage');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware(['auth', 'verified']);
+Route::delete('/comments', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 //tìm kiếm
 Route::get('/search', [SearchController::class, 'search'])->name('search');
@@ -81,5 +82,3 @@ Route::get('/chat', function () {
     return view('client.chat');
 })->name('chat.index');
 
-Route::post('/chatrooms/{chatRoomId}/messages', [ChatController::class, 'sendMessage']);
-Route::get('/chat/{chatRoomId}/messages', [ChatController::class, 'getMessages']);

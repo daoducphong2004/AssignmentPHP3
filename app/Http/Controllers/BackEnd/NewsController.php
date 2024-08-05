@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateNews;
 use App\Models\category;
 use App\Models\news;
 use App\Models\User;
@@ -40,25 +41,6 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      */
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->except('img');
-    //     if ($request->hasFile('img')) {
-    //         $path = Storage::put(self::PATH_UPLOAD, $request->file('img'));
-    //         if ($path) {
-    //             $data['img'] = 'storage/' . $path;
-    //             // Process the content to preserve line breaks and bold text
-    //             $data['content'] = nl2br(e($request->input('content')));
-    //             news::query()->create($data);
-    //             return redirect()->route('admin.news.index')->with('success', 'Image uploaded successfully.');
-    //         } else {
-    //             return redirect()->route('admin.news.index')->with('error', 'Image upload failed.');
-    //         }
-    //     } else {
-    //         return redirect()->route('admin.news.index')->with('error', 'No image file found.');
-    //     }
-
-    // }
     public function uploadImage(Request $request)
     {
         if ($request->hasFile('image')) {
@@ -74,11 +56,14 @@ class NewsController extends Controller
 
         return response()->json(['error' => 'No image uploaded'], 400);
     }
-    public function store(Request $request)
+    public function store(CreateNews $request)
     {
+        // dd($request->all());
         $data = $request->except('img');
         if ($request->hasFile('img')) {
             $path = Storage::put(self::PATH_UPLOAD, $request->file('img'));
+            // dd(Storage::url($path));
+
             if ($path) {
                 $data['img'] = 'storage/' . $path;
                 // Process the content to preserve line breaks and bold text
