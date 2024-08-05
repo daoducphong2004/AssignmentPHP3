@@ -2,80 +2,129 @@
 
 @section('content')
     <!-- Begin Page Content -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <div class="container-fluid">
-        <form action="{{ route('admin.news.update',$news->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('admin.news.update', $news->id) }}" method="post" id='insert-form'
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <label for="title">Tiêu đề:</label>
             <input class="form-control" value=" {{ $news->title }}" type="text" id="title" name="title"><br><br>
+            @if ($errors->has('title'))
+                <span class="text-danger">{{ $errors->first('title') }}</span>
+            @endif
+
+
 
             <label for="img">Hình ảnh:</label>
             <input class="form-control-file" type="file" id="img" name="img">
-            <img style="max-width: 200px;" src="{{asset( $news->img)}}" alt=""> <br><br>
+            <img style="max-width: 200px;" src="{{ asset($news->img) }}" alt="">
+            @if ($errors->has('img'))
+                <span class="text-danger">{{ $errors->first('img') }}</span>
+            @endif
+            <br><br>
+
 
             <label for="desc">Mô tả:</label>
-            <textarea class="form-control" id="desc" name="desc">{{ $news->desc }}</textarea><br><br>
+            <textarea class="form-control" id="desc" name="desc">{{ $news->desc }}</textarea>
+            @if ($errors->has('desc'))
+                <span class="text-danger">{{ $errors->first('desc') }}</span>
+            @endif
+            <br><br>
+
 
             <div class="form-group">
                 <label for="content">Nội dung:</label>
-                <div id="editor-container" style="min-height: 300px;"></div>
+                <div id="editor-container" style="min-height: 300px;">{!! $news->content !!}</div>
                 <textarea name="content" id="content123" style="display: none;"></textarea>
                 {!! $news->content !!}
-            </div> <br><br>
+            </div>
+            @if ($errors->has('content'))
+                <span class="text-danger">{{ $errors->first('content') }}</span>
+            @endif <br><br>
+
+
             <label for="view">Lượt xem:</label>
-            <input class="form-control" type="number" id="view" value="{{ $news->view }}" name="view"><br><br>
+            <input class="form-control" type="number" id="view" value="{{ $news->view }}" name="view">
+
+            @if ($errors->has('view'))
+                <span class="text-danger">{{ $errors->first('view') }}</span>
+            @endif
+            <br><br>
+
+
+
 
             <label for="id_author">ID Tác giả:</label>
             <select class="form-control" id="id_author" name="id_author">
                 <option value="">chọn tác giả</option>
                 @foreach ($author as $item)
-                    <option value="{{ $item->id }}" {{ $item->id == $news->id_author ? 'selected' : '' }}>{{ $item->name }}</option>
+                    <option value="{{ $item->id }}" {{ $item->id == $news->id_author ? 'selected' : '' }}>
+                        {{ $item->name }}</option>
                 @endforeach
             </select>
+            @if ($errors->has('id_author'))
+                <span class="text-danger">{{ $errors->first('id_author') }}</span>
+            @endif
             <br><br>
 
             <label for="id_category">Thể Loại:</label>
             <select class="form-control" id="id_category" name="id_category">
                 <option value="">Chọn thể loại</option>
                 @foreach ($category as $item)
-                    <option value="{{ $item->id }}" {{ $item->id == $news->id_category ? 'selected' : '' }}>{{ $item->title }}</option>
+                    <option value="{{ $item->id }}" {{ $item->id == $news->id_category ? 'selected' : '' }}>
+                        {{ $item->title }}</option>
                 @endforeach
             </select>
-
+            @if ($errors->has('id_category'))
+                <span class="text-danger">{{ $errors->first('id_category') }}</span>
+            @endif
             <br><br>
             <button class="btn btn-primary btn-user btn-block" type="submit">Sửa Tin Tức</button>
         </form>
     </div>
 
-<!-- Quill JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-<!-- ResizeObserver polyfill for browsers that don't support it -->
-<script src="https://cdn.jsdelivr.net/npm/resize-observer-polyfill@1.5.1/dist/ResizeObserver.global.js"></script>
-<script src="https://unpkg.com/browser-image-compression@1.0.14/dist/browser-image-compression.js"></script>
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- ResizeObserver polyfill for browsers that don't support it -->
+    <script src="https://cdn.jsdelivr.net/npm/resize-observer-polyfill@1.5.1/dist/ResizeObserver.global.js"></script>
+    <script src="https://unpkg.com/browser-image-compression@1.0.14/dist/browser-image-compression.js"></script>
 
 
-<script>
-    var quill = new Quill('#editor-container', {
-        theme: 'snow',
-        modules: {
-            toolbar: {
-                container: [
-                    [{ 'header': [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    ['image', 'link'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'align': [] }],
-                    [{ 'color': [] }, { 'background': [] }]
-                ],
-                handlers: {
-                    'image': imageHandler
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{
+                            'header': [1, 2, false]
+                        }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'link'],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        [{
+                            'align': []
+                        }],
+                        [{
+                            'color': []
+                        }, {
+                            'background': []
+                        }]
+                    ],
+                    handlers: {
+                        'image': imageHandler
+                    }
                 }
             }
-        }
-    });
-    function imageHandler() {
+        });
+
+        function imageHandler() {
             var input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/*');
@@ -123,9 +172,9 @@
             };
         }
 
-    document.querySelector('#insert-form').onsubmit = function() {
-        document.querySelector('#content123').value = quill.root.innerHTML;
-    };
-</script>
+        document.querySelector('#insert-form').onsubmit = function() {
+            document.querySelector('#content123').value = quill.root.innerHTML;
+        };
+    </script>
     <!-- /.container-fluid -->
 @endsection

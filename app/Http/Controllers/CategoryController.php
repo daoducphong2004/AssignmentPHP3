@@ -16,7 +16,7 @@ class CategoryController extends Controller
         $news = DB::table('news')
             ->join('category', 'news.id_category', '=', 'category.id')
             ->select('news.*', 'category.title as category_title', 'category.id as id_dm')
-            ->get();
+            ->paginate(6);
         return view('client.category', ['category' => $category, 'news' => $news]);
     }
 
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             ->join('category', 'news.id_category', '=', 'category.id')
             ->select('news.*', 'category.title as category_title')
             ->where('category.id', $id)
-            ->get();
+            ->paginate(6);
             $selectedCategory = DB::table('category')->where('id', $id)->first();
             return view('client.category', ['news' => $news, 'category' => $category,'selectedCategory'=>$selectedCategory]);
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\contactController;
 use App\Http\Controllers\HomeController;
@@ -52,6 +53,7 @@ Route::post('/contact', [contactController::class, 'store'])->name('contact.stor
 //     ->name('news.test')
 Route::post('/comments/uploadImage', [NewsController::class, 'uploadImage'])->name('comments.uploadImage');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware(['auth', 'verified']);
+Route::delete('/comments', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 //tìm kiếm
 Route::get('/search', [SearchController::class, 'search'])->name('search');
@@ -74,3 +76,9 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Auth::routes();
+
+//chat
+Route::get('/chat', function () {
+    return view('client.chat');
+})->name('chat.index');
+

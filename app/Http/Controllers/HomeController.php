@@ -44,7 +44,7 @@ class HomeController extends Controller
             ->select('news.*', 'category.title as category_title')
             ->whereBetween('news.created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
             ->get();
-
+        // dd($weekNews);
         return view('client.index', ['tintuc' => $news, 'danhmuc' => $category, 'tintuctop' => $newsTopView, 'tintuchangtuan' => $weekNews,]);
     }
 }
